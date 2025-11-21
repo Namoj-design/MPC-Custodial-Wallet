@@ -1,4 +1,5 @@
-import * as crypto from 'crypto';
+import * as secrets from 'secrets.js';
+import { PrivateKey } from '@hashgraph/sdk';
 
 export interface KeyShare {
   id: number;
@@ -12,25 +13,23 @@ export interface KeyGenerationResult {
 
 export class GenerateKeyShares {
   static generateThresholdKeyShares(): KeyGenerationResult {
-    // Generate a random private key
-    const privateKey = crypto.randomBytes(32);
-    const publicKey = crypto.createECDH('secp256k1').setPrivateKey(privateKey).getPublicKey('hex');
+    // Generate a random private key using Hedera SDK
+    const privateKey = PrivateKey.generate();
+    const publicKey = privateKey.publicKey.toString();
 
     // Split the private key into 3 shares using Shamir's Secret Sharing
-    const shares = this.splitKey(privateKey.toString('hex'), 3, 2);
+    const secretHex = privateKey.toStringRaw(); // Convert private key to hex
+    const shares = secrets.share(secretHex, 3, 2); // 3 shares, 2 required to reconstruct
+
+    // Map shares to KeyShare format
+    const keyShares: KeyShare[] = shares.map((share, index) => ({
+      id: index + 1,
+      share,
+    }));
 
     return {
       publicKey,
-      shares,
+      shares: keyShares,
     };
-  }
-
-  private static splitKey(secret: string, totalShares: number, threshold: number): KeyShare[] {
-    // Simple mock implementation of Shamir's Secret Sharing
-    const shares: KeyShare[] = [];
-    for (let i = 1; i <= totalShares; i++) {
-      shares.push({ id: i, share: `${secret}-share-${i}` });
-    }
-    return shares;
   }
 }
