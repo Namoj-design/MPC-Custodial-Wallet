@@ -1,4 +1,4 @@
-import { PrivateKey } from '@hashgraph/sdk';
+import { Client, PrivateKey, PublicKey } from '@hashgraph/sdk';
 import * as secrets from 'secrets.js';
 
 export interface MPCMessage {

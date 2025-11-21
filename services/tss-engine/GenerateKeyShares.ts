@@ -1,5 +1,5 @@
 import * as secrets from 'secrets.js';
-import { PrivateKey } from '@hashgraph/sdk';
+import { Client, PrivateKey, PublicKey } from '@hashgraph/sdk';
 
 export interface KeyShare {
   id: number;

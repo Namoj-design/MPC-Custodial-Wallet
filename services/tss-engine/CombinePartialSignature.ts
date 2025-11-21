@@ -1,4 +1,4 @@
-import { PublicKey } from '@hashgraph/sdk';
+import { Client, PrivateKey, PublicKey } from '@hashgraph/sdk';
 
 export interface PartialSignature {
   id: number;
