@@ -1,4 +1,4 @@
-import { MPCProtocol, CombinePartialSignatures } from '../tss-engine';
+import { MPCProtocol, CombinePartialSignatures } from '../tss-engine/index';
 import { ShardSelector } from './ShardSelector';
 import { PolicyEngine } from './PolicyEngine';
 import { RequestStateMachine } from './RequestStateMachine';
