@@ -1,4 +1,4 @@
-import * as crypto from 'crypto';
+import { PublicKey } from '@hashgraph/sdk';
 
 export interface PartialSignature {
   id: number;
@@ -6,14 +6,18 @@ export interface PartialSignature {
 }
 
 export class CombinePartialSignatures {
-  static combine(partialSignatures: PartialSignature[]): string {
+  static combine(
+    partialSignatures: PartialSignature[],
+    publicKey: string,
+    message: string,
+  ): string {
     if (partialSignatures.length < 2) {
       throw new Error('At least 2 partial signatures are required to combine.');
     }
 
-    // Verify each partial signature (mock verification)
+    // Verify each partial signature
     partialSignatures.forEach((sig) => {
-      if (!this.verifyPartialSignature(sig)) {
+      if (!this.verifyPartialSignature(sig, publicKey, message)) {
         throw new Error(`Invalid partial signature from ID ${sig.id}`);
       }
     });
@@ -26,8 +30,16 @@ export class CombinePartialSignatures {
     return combinedSignature;
   }
 
-  private static verifyPartialSignature(partialSignature: PartialSignature): boolean {
-    // Mock verification logic
-    return partialSignature.signature.startsWith('PartialSig');
+  private static verifyPartialSignature(
+    partialSignature: PartialSignature,
+    publicKey: string,
+    message: string,
+  ): boolean {
+    const pubKey = PublicKey.fromString(publicKey);
+    const isValid = pubKey.verify(
+      Buffer.from(message),
+      Buffer.from(partialSignature.signature, 'hex'),
+    );
+    return isValid;
   }
 }
