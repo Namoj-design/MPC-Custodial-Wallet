@@ -1,0 +1,20 @@
+{
+    "name": "mpc-hashgraph-wallet",
+    "version": "1.0.0",
+    "private": true,
+    "workspaces": [
+      "apps/*",
+      "backend",
+      "services/*",
+      "shared/*"
+    ],
+    "scripts": {
+      "dev": "concurrently \"pnpm --filter backend dev\" \"pnpm --filter apps/* dev\"",
+      "build": "pnpm --recursive run build",
+      "lint": "pnpm --recursive run lint",
+      "test": "pnpm --recursive run test"
+    },
+    "devDependencies": {
+      "concurrently": "^8.2.0"
+    }
+  }
