@@ -18,6 +18,7 @@
         "concurrently": "^8.2.0"
     },
     "dependencies": {
-        "@hashgraph/sdk": "^2.77.0"
+        "@hashgraph/sdk": "^2.77.0",
+        "secrets.js": "^0.1.8"
     }
 }
