@@ -1,4 +1,4 @@
 export * from './GenerateKeyShares';
 export * from './MPCProtocol';
-export * from './CombinePartialSignatures';
+export * from './CombinePartialSignature';
 export * from './KeyStore';
