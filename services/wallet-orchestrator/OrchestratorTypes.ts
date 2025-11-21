@@ -4,6 +4,7 @@ export interface MPCRequest {
     publicKey: string;
     amount: number;
     tokenId: string;
+    isAdmin?: boolean; // Optional field for admin override
   }
   
   export interface MPCResponse {
