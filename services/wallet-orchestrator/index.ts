@@ -2,4 +2,4 @@ export * from './Orchestrator';
 export * from './PolicyEngine';
 export * from './RequestStateMachine';
 export * from './ShardSelector';
-export * from './OrchestratorTypes';
+export { MPCRequest, MPCResponse, ShardNode, ShardSelectionResult } from './OrchestratorTypes';
