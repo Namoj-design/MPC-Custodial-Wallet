@@ -7,6 +7,9 @@ export interface KeyStore {
 
 export class InMemoryKeyStore implements KeyStore {
   private store: Map<number, string> = new Map();
+  private readonly algorithm = 'aes-256-cbc';
+  private readonly key = crypto.randomBytes(32); // 256-bit key
+  private readonly iv = crypto.randomBytes(16); // 128-bit IV
 
   async saveKeyShare(id: number, share: string): Promise<void> {
     this.store.set(id, this.encryptShare(share));
@@ -18,29 +21,18 @@ export class InMemoryKeyStore implements KeyStore {
   }
 
   private encryptShare(share: string): string {
-    const cipher = crypto.createCipher('aes-256-cbc', 'encryption-key');
+    const cipher = crypto.createCipheriv(this.algorithm, this.key, this.iv);
     let encrypted = cipher.update(share, 'utf8', 'hex');
     encrypted += cipher.final('hex');
-    return encrypted;
+    return `${this.iv.toString('hex')}:${encrypted}`; // Store IV with the encrypted data
   }
 
   private decryptShare(encryptedShare: string): string {
-    const decipher = crypto.createDecipher('aes-256-cbc', 'encryption-key');
-    let decrypted = decipher.update(encryptedShare, 'hex', 'utf8');
+    const [ivHex, encrypted] = encryptedShare.split(':');
+    const iv = Buffer.from(ivHex, 'hex');
+    const decipher = crypto.createDecipheriv(this.algorithm, this.key, iv);
+    let decrypted = decipher.update(encrypted, 'hex', 'utf8');
     decrypted += decipher.final('utf8');
     return decrypted;
-  }
-}
-
-export class SecureKeyStore implements KeyStore {
-  async saveKeyShare(id: number, share: string): Promise<void> {
-    // Placeholder for secure storage (e.g., encrypted file or database)
-    console.log(`Saving key share securely: ID=${id}`);
-  }
-
-  async getKeyShare(id: number): Promise<string | null> {
-    // Placeholder for secure retrieval
-    console.log(`Retrieving key share securely: ID=${id}`);
-    return null;
   }
 }
