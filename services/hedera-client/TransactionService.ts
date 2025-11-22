@@ -4,7 +4,7 @@ import {
     TransactionReceipt,
   } from "@hashgraph/sdk";
   import { HederaClient } from "./HederaClient";
-  import { TransactionResult } from "./ClientTypes";
+  import { TransactionResult } from "/Users/namojperiakumar/Desktop/MPC-Wallet/services/hedera-client/ ClientTypes.ts";
   
   export class TransactionService {
     constructor(private hedera: HederaClient) {}
