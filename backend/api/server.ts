@@ -3,7 +3,7 @@ import walletRoutes from "/Users/namojperiakumar/Desktop/MPC-Wallet/backend/api/
 import accountRoutes from "/Users/namojperiakumar/Desktop/MPC-Wallet/backend/api/routes/accountRoutes.ts";
 import transactionRoutes from "/Users/namojperiakumar/Desktop/MPC-Wallet/backend/api/routes/transactionRoutes.ts";
 import topicRoutes from "/Users/namojperiakumar/Desktop/MPC-Wallet/backend/api/routes/topicRoutes.ts";
-import { notFoundHandler } from "./middleware/notFoundHandler";
+import { notFoundHandler } from "/Users/namojperiakumar/Desktop/MPC-Wallet/backend/api/middleware/notFoundHandler.ts";
 import { errorHandler } from "./middleware/errorHandler";
 
 export function createServer(): Application {
