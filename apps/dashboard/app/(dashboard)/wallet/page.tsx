@@ -2,7 +2,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { WalletSummaryCard } from "../../../../components/WalletSummaryCard";
+import { WalletSummaryCard } from "/Users/namojperiakumar/Desktop/MPC-Wallet/apps/dashboard/components/WalletSummaryCard.tsx";
 import { getSampleWalletOverview } from "/Users/namojperiakumar/Desktop/MPC-Wallet/apps/dashboard/lib/api.ts";
 import React from "react";
 
