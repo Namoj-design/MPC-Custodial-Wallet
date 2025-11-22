@@ -3,7 +3,7 @@
 
 import { useEffect, useState } from "react";
 import { WalletSummaryCard } from "../../../../components/WalletSummaryCard";
-import { getSampleWalletOverview } from "../../../../lib/api";
+import { getSampleWalletOverview } from "/Users/namojperiakumar/Desktop/MPC-Wallet/apps/dashboard/lib/api.ts";
 import React from "react";
 
 export default function WalletPage() {
