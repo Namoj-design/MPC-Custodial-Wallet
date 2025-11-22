@@ -1,6 +1,6 @@
 // backend/auth/jwt.ts
 
-import jwt from "jsonwebtoken";
+import * as jwt from "jsonwebtoken";
 
 const JWT_SECRET = process.env.JWT_SECRET || "super-secret";
 const JWT_EXPIRES = "2h";

@@ -17,12 +17,14 @@
     "devDependencies": {
         "@types/bcrypt": "^6.0.0",
         "@types/express": "^5.0.5",
+        "@types/jsonwebtoken": "^9.0.10",
         "concurrently": "^8.2.0"
     },
     "dependencies": {
         "@hashgraph/sdk": "^2.77.0",
         "bcrypt": "^6.0.0",
         "express": "^5.1.0",
+        "jsonwebtoken": "^9.0.2",
         "secrets.js": "^0.1.8"
     }
 }
