@@ -3,9 +3,12 @@
     "version": "1.0.0",
     "private": true,
     "scripts": {
-      "dev": "concurrently \"npm --prefix backend run dev\" \"npm --prefix apps/dashboard run dev\""
+        "dev": "concurrently \"npm --prefix backend run dev\" \"npm --prefix apps/dashboard run dev\""
     },
     "devDependencies": {
-      "concurrently": "^8.2.0"
+        "concurrently": "^8.2.0"
+    },
+    "dependencies": {
+        "@hashgraph/sdk": "^2.77.0"
     }
-  }
+}
