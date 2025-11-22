@@ -31,6 +31,15 @@ import { TopicResponse } from "/Users/namojperiakumar/Desktop/MPC-Wallet/service
     subscribeToTopic(topicId: string, callback: (msg: any) => void) {
       new TopicMessageQuery()
         .setTopicId(topicId)
-        .subscribe(this.hedera.getClient(), callback);
+        .subscribe(
+          this.hedera.getClient(),
+          null,
+          (message) => {
+            callback({
+              message: message.contents.toString(),
+              consensusTimestamp: message.consensusTimestamp.toString(),
+            });
+          }
+        );
     }
   }
