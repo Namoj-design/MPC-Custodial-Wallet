@@ -25,6 +25,7 @@
         "bcrypt": "^6.0.0",
         "express": "^5.1.0",
         "jsonwebtoken": "^9.0.2",
-        "secrets.js": "^0.1.8"
+        "secrets.js": "^0.1.8",
+        "zustand": "^5.0.8"
     }
 }
