@@ -9,7 +9,7 @@ export default function LandingPage() {
         MPC Custodial Wallet</h1>
       <p className="text-slate-300 max-w-xl text-center">
         2-of-3 Threshold MPC wallet powered by Hedera Hashgraph. Secure,
-        programmable, audit-ready custody for serious infrastructure.
+        programmable, custody for serious infrastructure.
       </p>
       <div className="flex gap-4">
         <Link
