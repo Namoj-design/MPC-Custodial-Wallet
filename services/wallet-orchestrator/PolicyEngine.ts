@@ -1,4 +1,4 @@
-import { MPCRequest } from './OrchestratorTypes';
+import { MPCRequest } from '/Users/namojperiakumar/Desktop/MPC-Wallet/services/wallet-orchestrator/OrchestratorTypes.ts';
 
 export interface PolicyResult {
   allowed: boolean;
