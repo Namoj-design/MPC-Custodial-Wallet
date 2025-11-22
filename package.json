@@ -15,10 +15,12 @@
         "test": "pnpm --recursive run test"
     },
     "devDependencies": {
+        "@types/express": "^5.0.5",
         "concurrently": "^8.2.0"
     },
     "dependencies": {
         "@hashgraph/sdk": "^2.77.0",
+        "express": "^5.1.0",
         "secrets.js": "^0.1.8"
     }
 }
