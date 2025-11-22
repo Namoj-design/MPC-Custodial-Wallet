@@ -3,7 +3,7 @@ import {
     AccountId,
     PrivateKey,
   } from "@hashgraph/sdk";
-  import { HederaClientConfig } from "./ClientTypes";
+  import { HederaClientConfig } from "/Users/namojperiakumar/Desktop/MPC-Wallet/services/hedera-client/ ClientTypes.ts";
   
   export class HederaClient {
     private client: Client;
