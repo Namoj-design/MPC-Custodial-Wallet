@@ -1,3 +1,5 @@
+import React from "react";
+
 // apps/dashboard/components/StatusBadge.tsx
 interface StatusBadgeProps {
     variant: "default" | "success" | "warning" | "primary";
