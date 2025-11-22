@@ -3,7 +3,7 @@
 
 import { useEffect, useState } from "react";
 import { WalletSummaryCard } from "/Users/namojperiakumar/Desktop/MPC-Wallet/apps/dashboard/components/WalletSummaryCard.tsx";
-import { getSampleWalletOverview } from "/Users/namojperiakumar/Desktop/MPC-Wallet/apps/dashboard/lib/api.ts";
+import { getWalletOverview } from "/Users/namojperiakumar/Desktop/MPC-Wallet/apps/dashboard/lib/api.ts";
 import React from "react";
 
 export default function WalletPage() {
@@ -11,7 +11,7 @@ export default function WalletPage() {
 
   useEffect(() => {
     (async () => {
-      const ov = await getSampleWalletOverview();
+      const ov = await getWalletOverview();
       setOverview(ov);
     })();
   }, []);
