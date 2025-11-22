@@ -6,7 +6,7 @@ import {
     AccountInfoQuery,
   } from "@hashgraph/sdk";
   import { HederaClient } from "./HederaClient";
-  import { AccountCreationResult } from "./ClientTypes";
+  import { AccountCreationResult } from "/Users/namojperiakumar/Desktop/MPC-Wallet/services/hedera-client/ ClientTypes.ts";
   
   export class AccountService {
     constructor(private hedera: HederaClient) {}
