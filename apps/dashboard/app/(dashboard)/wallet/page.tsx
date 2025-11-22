@@ -2,8 +2,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { WalletSummaryCard } from "../../../components/WalletSummaryCard";
-import { getSampleWalletOverview } from "../../../lib/api";
+import { WalletSummaryCard } from "../../../../components/WalletSummaryCard";
+import { getSampleWalletOverview } from "../../../../lib/api";
+import React from "react";
 
 export default function WalletPage() {
   const [overview, setOverview] = useState<any | null>(null);
