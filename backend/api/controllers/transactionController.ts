@@ -1,3 +1,4 @@
+// backend/api/controllers/transactionController.ts
 import { Request, Response, NextFunction } from "express";
 import { HederaClient } from "../../../services/hedera-client/HederaClient";
 import { TransactionService } from "../../../services/hedera-client/TransactionService";
@@ -26,6 +27,29 @@ export async function transferHbarHandler(
 
     const statusCode = result.success ? 200 : 400;
     res.status(statusCode).json({ success: result.success, data: result });
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function getRecentTransactionsHandler(
+  _req: Request,
+  res: Response<ApiResponse>,
+  next: NextFunction
+) {
+  try {
+    // TODO: replace with real DB query
+    const items = [
+      {
+        id: "0.0.abc-123",
+        from: "0.0.123456",
+        to: "0.0.654321",
+        amount: "10.5",
+        status: "SUCCESS",
+        createdAt: new Date().toISOString(),
+      },
+    ];
+    res.status(200).json({ success: true, data: items });
   } catch (err) {
     next(err);
   }
