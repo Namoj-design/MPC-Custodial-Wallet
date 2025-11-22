@@ -2,8 +2,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { WalletSummaryCard } from "/Users/namojperiakumar/Desktop/MPC-Wallet/apps/dashboard/components/WalletSummaryCard.tsx";
-import { getWalletOverview } from "/Users/namojperiakumar/Desktop/MPC-Wallet/apps/dashboard/lib/api.ts";
+import { WalletSummaryCard } from "../../../../components/WalletSummaryCard";
+import { getWalletOverview } from "/Users/namojperiakumar/Desktop/MPC-Wallet/apps/dashboard/lib/api.tsx";
 import React from "react";
 
 export default function WalletPage() {
