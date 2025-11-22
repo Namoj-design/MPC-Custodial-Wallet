@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { ApiResponse } from "../types/ApiResponse";
+import { ApiResponse } from "/Users/namojperiakumar/Desktop/MPC-Wallet/backend/api/types/ApiResponse.ts";
 
 export function notFoundHandler(
   _req: Request,
