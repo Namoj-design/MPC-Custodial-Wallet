@@ -4,7 +4,7 @@ import {
     TopicMessageSubmitTransaction,
   } from "@hashgraph/sdk";
   import { HederaClient } from "./HederaClient";
-  import { TopicResponse } from "./ClientTypes";
+  import { TopicResponse } from "/Users/namojperiakumar/Desktop/MPC-Wallet/services/hedera-client/ ClientTypes.ts";
   
   export class TopicService {
     constructor(private hedera: HederaClient) {}
