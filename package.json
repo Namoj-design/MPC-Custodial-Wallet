@@ -9,10 +9,10 @@
         "shared/*"
     ],
     "scripts": {
-        "dev": "concurrently \"pnpm --filter backend dev\" \"pnpm --filter apps/* dev\"",
-        "build": "pnpm --recursive run build",
-        "lint": "pnpm --recursive run lint",
-        "test": "pnpm --recursive run test"
+        "dev": "concurrently \"npm --prefix backend run dev\" \"npm --prefix apps/dashboard run dev\"",
+        "build": "npm --workspaces run build",
+        "lint": "npm --workspaces run lint",
+        "test": "npm --workspaces run test"
     },
     "devDependencies": {
         "@types/bcrypt": "^6.0.0",
