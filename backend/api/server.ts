@@ -1,5 +1,5 @@
 import express, { Application } from "express";
-import walletRoutes from "./routes/walletRoutes";
+import walletRoutes from "/Users/namojperiakumar/Desktop/MPC-Wallet/backend/api/routes/walletRoutes.ts";
 import accountRoutes from "/Users/namojperiakumar/Desktop/MPC-Wallet/backend/api/routes/accountRoutes.ts";
 import transactionRoutes from "./routes/transactionRoutes";
 import topicRoutes from "./routes/topicRoutes";
