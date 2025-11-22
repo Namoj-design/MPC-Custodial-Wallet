@@ -1,7 +1,7 @@
 import express, { Application } from "express";
 import walletRoutes from "/Users/namojperiakumar/Desktop/MPC-Wallet/backend/api/routes/walletRoutes.ts";
 import accountRoutes from "/Users/namojperiakumar/Desktop/MPC-Wallet/backend/api/routes/accountRoutes.ts";
-import transactionRoutes from "./routes/transactionRoutes";
+import transactionRoutes from "/Users/namojperiakumar/Desktop/MPC-Wallet/backend/api/routes/transactionRoutes.ts";
 import topicRoutes from "./routes/topicRoutes";
 import { notFoundHandler } from "./middleware/notFoundHandler";
 import { errorHandler } from "./middleware/errorHandler";
