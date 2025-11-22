@@ -4,7 +4,7 @@ import accountRoutes from "/Users/namojperiakumar/Desktop/MPC-Wallet/backend/api
 import transactionRoutes from "/Users/namojperiakumar/Desktop/MPC-Wallet/backend/api/routes/transactionRoutes.ts";
 import topicRoutes from "/Users/namojperiakumar/Desktop/MPC-Wallet/backend/api/routes/topicRoutes.ts";
 import { notFoundHandler } from "/Users/namojperiakumar/Desktop/MPC-Wallet/backend/api/middleware/notFoundHandler.ts";
-import { errorHandler } from "./middleware/errorHandler";
+import { errorHandler } from "/Users/namojperiakumar/Desktop/MPC-Wallet/backend/api/middleware/errorHandler.ts";
 
 export function createServer(): Application {
   const app = express();
