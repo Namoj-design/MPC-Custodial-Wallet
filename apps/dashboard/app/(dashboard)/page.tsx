@@ -5,7 +5,7 @@ import { WalletSummaryCard } from "../../components/WalletSummaryCard";
 import { StatCard } from "../../components/StatCard";
 import { TransactionTable } from "../../components/TransactionTable";
 import { useEffect, useState } from "react";
-import { getHealth, getSampleWalletOverview, getRecentTransactions } from "../../lib/api";
+import { getHealth, getWalletOverview, getRecentTransactions } from "../../lib/api";
 import React from "react";
 
 export default function DashboardHome() {
@@ -18,7 +18,7 @@ export default function DashboardHome() {
       const h = await getHealth();
       setHealth(h.status ?? "unknown");
 
-      const ov = await getSampleWalletOverview();
+      const ov = await getWalletOverview();
       setOverview(ov);
 
       const recent = await getRecentTransactions();

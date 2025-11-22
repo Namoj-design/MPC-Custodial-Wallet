@@ -75,13 +75,13 @@ export interface WalletOverview {
   topics: number;
 }
 
-export async function getSampleWalletOverview(): Promise<WalletOverview> {
-  const res = await request<{
-    success: boolean;
-    data: WalletOverview;
-  }>("/api/wallet/overview");
-  return res.data;
-}
+export async function getWalletOverview() {
+    const res = await request<{
+      success: boolean;
+      data: WalletOverview;
+    }>("/api/wallet/overview");
+    return res.data;
+  }
 
 // ---------- Transactions ----------
 
