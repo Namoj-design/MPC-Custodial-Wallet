@@ -2,30 +2,10 @@
     "name": "mpc-hashgraph-wallet",
     "version": "1.0.0",
     "private": true,
-    "workspaces": [
-        "apps/*",
-        "backend",
-        "services/*",
-        "shared/*"
-    ],
     "scripts": {
-        "dev": "concurrently \"npm --prefix backend run dev\" \"npm --prefix apps/dashboard run dev\"",
-        "build": "npm --workspaces run build",
-        "lint": "npm --workspaces run lint",
-        "test": "npm --workspaces run test"
+      "dev": "concurrently \"npm --prefix backend run dev\" \"npm --prefix apps/dashboard run dev\""
     },
     "devDependencies": {
-        "@types/bcrypt": "^6.0.0",
-        "@types/express": "^5.0.5",
-        "@types/jsonwebtoken": "^9.0.10",
-        "concurrently": "^8.2.0"
-    },
-    "dependencies": {
-        "@hashgraph/sdk": "^2.77.0",
-        "bcrypt": "^6.0.0",
-        "express": "^5.1.0",
-        "jsonwebtoken": "^9.0.2",
-        "secrets.js": "^0.1.8",
-        "zustand": "^5.0.8"
+      "concurrently": "^8.2.0"
     }
-}
+  }
