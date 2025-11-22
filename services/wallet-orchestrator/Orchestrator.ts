@@ -1,13 +1,13 @@
 import { MPCProtocol, CombinePartialSignatures } from '../tss-engine/index';
-import { ShardSelector } from './ShardSelector';
-import { PolicyEngine } from './PolicyEngine';
-import { RequestStateMachine } from './RequestStateMachine';
+import { ShardSelector } from '/Users/namojperiakumar/Desktop/MPC-Wallet/services/wallet-orchestrator/ShardSelector.ts';
+import { PolicyEngine } from '/Users/namojperiakumar/Desktop/MPC-Wallet/services/wallet-orchestrator/PolicyEngine.ts';
+import { RequestStateMachine } from '/Users/namojperiakumar/Desktop/MPC-Wallet/services/wallet-orchestrator/RequestStateMachine.ts';
 import {
   MPCRequest,
   MPCResponse,
   OrchestratorConfig,
   ShardSelectionResult,
-} from './OrchestratorTypes';
+} from '/Users/namojperiakumar/Desktop/MPC-Wallet/services/wallet-orchestrator/OrchestratorTypes.ts';
 
 export class Orchestrator {
   private readonly shardSelector: ShardSelector;
@@ -73,7 +73,6 @@ export class Orchestrator {
     round1Messages: any[],
   ): Promise<any[]> {
     try {
-      // Process round 2 messages (replace with real logic if needed)
       const round2Messages = round1Messages.map((msg) => ({
         ...msg,
         payload: `Processed-${msg.payload}`, // Replace with real round 2 processing logic
