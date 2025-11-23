@@ -1,5 +1,5 @@
 // backend/src/api/index.ts
-
+import "dotenv/config";
 import { createServer } from "./server";
 
 const port = process.env.PORT || 4000;
