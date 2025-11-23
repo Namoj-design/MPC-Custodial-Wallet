@@ -55,7 +55,3 @@ This system allows:
 - Wallet overview  
 - MPC round visualizer (incoming)  
 - Transaction explorer  
-
----
-
-# 📁 Project Directory Structure  
