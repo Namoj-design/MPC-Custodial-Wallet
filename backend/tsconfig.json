@@ -1,0 +1,43 @@
+{
+  "compilerOptions": {
+    /* Language */
+    "target": "ES2020",
+    "lib": ["ES2020"],
+    "module": "commonjs",
+
+    /* Module Resolution */
+    "moduleResolution": "node",
+    "baseUrl": ".", 
+    "paths": {
+      "*": ["./*"]
+    },
+
+    /* Important: let TypeScript scan ALL folders */
+    "rootDir": ".", 
+    "outDir": "./dist",
+
+    /* Interop */
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+
+    /* Type Checking */
+    "strict": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+
+    /* JSON + Node Types */
+    "resolveJsonModule": true,
+    "types": ["node", "express"]
+  },
+
+  /* Include EVERYTHING inside backend */
+  "include": [
+    "**/*.ts"
+  ],
+
+  /* Exclude build + dependencies */
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}

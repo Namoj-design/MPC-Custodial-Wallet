@@ -1,0 +1,25 @@
+{
+    "name": "mpc-hashgraph-wallet",
+    "version": "1.0.0",
+    "private": true,
+    "scripts": {
+        "dev": "concurrently \"npm --prefix backend run dev\" \"npm --prefix apps/dashboard run dev\""
+    },
+    "devDependencies": {
+        "@types/amqplib": "^0.10.8",
+        "@types/express": "^5.0.6",
+        "@types/node": "^24.10.1",
+        "concurrently": "^8.2.0"
+    },
+    "dependencies": {
+        "@hashgraph/sdk": "^2.77.0",
+        "amqplib": "^0.10.9",
+        "axios": "^1.13.2",
+        "dotenv": "^17.2.3",
+        "express": "^5.2.1",
+        "ioredis": "^5.8.2",
+        "next-auth": "^4.24.13",
+        "sha.js": "^2.4.12",
+        "zod": "^4.1.13"
+    }
+}
