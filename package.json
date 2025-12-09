@@ -21,7 +21,9 @@
         "ioredis": "^5.8.2",
         "next-auth": "^4.24.13",
         "radix-ui": "^1.4.3",
+        "react-router-dom": "^7.10.1",
         "sha.js": "^2.4.12",
+        "sonner": "^2.0.7",
         "tailwind-merge": "^3.4.0",
         "utils": "^0.3.1",
         "zod": "^4.1.13"
