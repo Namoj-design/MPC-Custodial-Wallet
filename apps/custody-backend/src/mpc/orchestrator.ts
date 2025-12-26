@@ -15,6 +15,7 @@ export class MPCOrchestrator {
   private nonces: Map<string, Uint8Array> = new Map();
   private partials: PartialSig[] = [];
   private challenge?: bigint;
+  onRound: any;
 
   constructor(private session: MPCSession) {}
 
