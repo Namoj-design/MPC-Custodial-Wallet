@@ -1,28 +1,24 @@
 import Fastify from "fastify";
 import dotenv from "dotenv";
+import { startMPCWebSocketServer } from "./mpc/ws";
 
 dotenv.config();
 
 const app = Fastify({ logger: true });
 
-app.get("/health", async (request, reply) => {
+app.get("/health", async () => {
   return { status: "ok", service: "custody-backend" };
 });
 
-const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3001;
+const PORT = Number(process.env.PORT) || 3001;
 
-if (isNaN(PORT)) {
-  throw new Error("Invalid PORT environment variable");
-}
-
-const startServer = async () => {
-  try {
-    await app.listen({ port: PORT });
-    app.log.info(`Custody backend running on port ${PORT}`);
-  } catch (err) {
+app.listen({ port: PORT }, (err, address) => {
+  if (err) {
     app.log.error(err);
     process.exit(1);
   }
-};
 
-startServer();
+  startMPCWebSocketServer(app.server);
+
+  app.log.info(`Custody backend running on ${address}`);
+});
