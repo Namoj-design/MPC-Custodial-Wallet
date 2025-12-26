@@ -1,4 +1,5 @@
 import { WebSocket } from "ws";
+import { MPCState, initialState } from "./state";
 
 export type MPCParty = {
   id: string;
@@ -8,6 +9,7 @@ export type MPCParty = {
 export type MPCSession = {
   sessionId: string;
   parties: Map<string, MPCParty>;
+  state: MPCState;
 };
 
 export const sessions = new Map<string, MPCSession>();
@@ -18,6 +20,7 @@ export function createSession(): MPCSession {
   const session: MPCSession = {
     sessionId,
     parties: new Map(),
+    state: initialState(),
   };
 
   sessions.set(sessionId, session);
