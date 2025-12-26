@@ -74,7 +74,7 @@ export function startMPCWebSocketServer(server: any) {
 
         // READY message: move session to READY state
         if (message.type === "ready" && currentSession) {
-          currentSession.state.state = MPCSessionState.READY;
+          currentSession.orchestrator.onReady();
           socket.send(
             JSON.stringify({
               type: "ready_ack",
