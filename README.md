@@ -1,6 +1,6 @@
 <div align="center">
   
-# ⚡️ MPC HASHGRAPH WALLET  
+#  MPC HASHGRAPH WALLET  
 ### **Enterprise-Grade 2-of-3 Threshold Signatures + Hedera Consensus Network**
 
 <img src="https://raw.githubusercontent.com/akhilshenoy/motion-assets/main/chainflow.gif" width="460"/>
