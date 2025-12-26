@@ -86,8 +86,10 @@ export function startMPCWebSocketServer(server: any) {
 
         // ROUND message: advance MPC round and relay to other parties
         if (message.type === "round" && currentSession) {
-          currentSession.state.state = MPCSessionState.RUNNING;
-          currentSession.state.round = message.round;
+          const result = currentSession.orchestrator.onRound(
+            message.round,
+            message.payload
+          );
 
           currentSession.parties.forEach((party) => {
             if (party.id !== clientId) {
