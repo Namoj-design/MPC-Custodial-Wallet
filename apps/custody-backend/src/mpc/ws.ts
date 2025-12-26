@@ -106,6 +106,58 @@ export function startMPCWebSocketServer(server: any) {
           return;
         }
 
+        // ROUND 1: receive nonce
+        if (message.type === "nonce" && currentSession) {
+          const result = currentSession.orchestrator.onNonce(
+            clientId,
+            new Uint8Array(message.Ri)
+          );
+
+          if (result.allNoncesReceived) {
+            (async () => {
+              const challenge =
+                await currentSession.orchestrator.computeChallenge(
+                  new TextEncoder().encode("hello-mpc"),
+                  new Uint8Array(message.publicKey)
+                );
+
+              currentSession.parties.forEach((p) =>
+                p.socket.send(
+                  JSON.stringify({
+                    type: "challenge",
+                    c: challenge.toString(),
+                  })
+                )
+              );
+            })();
+          }
+          return;
+        }
+
+        // ROUND 3: receive partial signature
+        if (message.type === "partialSig" && currentSession) {
+          (async () => {
+            const result =
+              await currentSession.orchestrator.onPartialSig(
+                new TextEncoder().encode("hello-mpc"),
+                new Uint8Array(message.publicKey),
+                message.sig
+              );
+
+            if (result.complete) {
+              currentSession.parties.forEach((p) =>
+                p.socket.send(
+                  JSON.stringify({
+                    type: "signature",
+                    signature: result.signature,
+                  })
+                )
+              );
+            }
+          })();
+          return;
+        }
+
         // MPC message relay
         if (message.type === "mpc" && currentSession) {
           const mpcMsg = message as MPCMessage;
