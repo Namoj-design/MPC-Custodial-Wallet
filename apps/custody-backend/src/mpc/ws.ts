@@ -5,6 +5,7 @@ import {
   createSession,
   MPCSession,
 } from "./session";
+import { MPCSessionState } from "./state";
 
 type JoinMessage = {
   type: "join";
@@ -70,6 +71,38 @@ export function startMPCWebSocketServer(server: any) {
           
             return;
           }
+
+        // READY message: move session to READY state
+        if (message.type === "ready" && currentSession) {
+          currentSession.state.state = MPCSessionState.READY;
+          socket.send(
+            JSON.stringify({
+              type: "ready_ack",
+              sessionId: currentSession.sessionId,
+            })
+          );
+          return;
+        }
+
+        // ROUND message: advance MPC round and relay to other parties
+        if (message.type === "round" && currentSession) {
+          currentSession.state.state = MPCSessionState.RUNNING;
+          currentSession.state.round = message.round;
+
+          currentSession.parties.forEach((party) => {
+            if (party.id !== clientId) {
+              party.socket.send(
+                JSON.stringify({
+                  type: "round",
+                  from: clientId,
+                  round: message.round,
+                  payload: message.payload,
+                })
+              );
+            }
+          });
+          return;
+        }
 
         // MPC message relay
         if (message.type === "mpc" && currentSession) {

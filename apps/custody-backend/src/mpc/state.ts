@@ -1,5 +1,5 @@
 export enum MPCSessionState {
-    CREATED = "CREATED",
+    IDLE = "IDLE",
     READY = "READY",
     RUNNING = "RUNNING",
     COMPLETED = "COMPLETED",
@@ -12,7 +12,7 @@ export enum MPCSessionState {
   
   export function initialState(): MPCState {
     return {
-      state: MPCSessionState.CREATED,
+      state: MPCSessionState.IDLE,
       round: 0,
     };
   }
