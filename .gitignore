@@ -1,4 +1,6 @@
-node_modules
+cat <<EOF > .gitignore
+node_modules/
 .next/
-dist
+dist/
 .env
+EOF
