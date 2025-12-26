@@ -31,32 +31,45 @@ export function startMPCWebSocketServer(server: any) {
       socket.on("message", (raw: Buffer) => {
         const message = JSON.parse(raw.toString());
 
-        // JOIN session
         if (message.type === "join") {
-          const joinMsg = message as JoinMessage;
-
-          const session =
-            joinMsg.sessionId && sessions.get(joinMsg.sessionId)
-              ? sessions.get(joinMsg.sessionId)!
-              : createSession();
-
-          session.parties.set(clientId, {
-            id: clientId,
-            socket,
-          });
-
-          currentSession = session;
-
-          socket.send(
-            JSON.stringify({
-              type: "joined",
-              sessionId: session.sessionId,
-              clientId,
-            })
-          );
-
-          return;
-        }
+            const joinMsg = message as JoinMessage;
+          
+            let session;
+          
+            // STRICT join logic
+            if (joinMsg.sessionId) {
+              session = sessions.get(joinMsg.sessionId);
+          
+              if (!session) {
+                socket.send(
+                  JSON.stringify({
+                    type: "error",
+                    message: "Session not found",
+                  })
+                );
+                return;
+              }
+            } else {
+              session = createSession();
+            }
+          
+            session.parties.set(clientId, {
+              id: clientId,
+              socket,
+            });
+          
+            currentSession = session;
+          
+            socket.send(
+              JSON.stringify({
+                type: "joined",
+                sessionId: session.sessionId,
+                clientId,
+              })
+            );
+          
+            return;
+          }
 
         // MPC message relay
         if (message.type === "mpc" && currentSession) {
