@@ -4,8 +4,7 @@ import {
   sessions,
   createSession,
   MPCSession,
-} from "./session";
-import { MPCSessionState } from "./state";
+} from "./session.js";
 
 type JoinMessage = {
   type: "join";
