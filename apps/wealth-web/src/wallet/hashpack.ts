@@ -1,7 +1,8 @@
 /**
  * Ask HashPack to sign a frozen Hedera transaction
  */
-async signTransactionBytes(txBytes: Uint8Array): Promise<{
+class HashpackWallet {
+  async signTransactionBytes(txBytes: Uint8Array): Promise<{
     signedBytes: Uint8Array;
     signatureMap?: Uint8Array;
   }> {
@@ -29,3 +30,8 @@ async signTransactionBytes(txBytes: Uint8Array): Promise<{
       signatureMap: response.signatureMap!,
     };
   }
+
+  pairingData: any; // Add appropriate type
+  topic: string | undefined;
+  hashconnect: any; // Add appropriate type
+}

@@ -1,111 +1,94 @@
-/**
- * RequestStateMachine
- *
- * Models the lifecycle of a custody transaction request.
- * This is a PURE state machine:
- * - No crypto
- * - No Hedera
- * - No network calls
- *
- * It prevents invalid state transitions and
- * provides a single source of truth for request status.
- */
+import { HashConnect, HashConnectTypes } from "hashconnect";
 
-/**
- * All possible request states.
- */
-export enum RequestState {
-  CREATED = "CREATED",               // Intent created
-  POLICY_APPROVED = "POLICY_APPROVED", // Passed PolicyEngine
-  AWAITING_APPROVALS = "AWAITING_APPROVALS", // Waiting for threshold
-  AUTHORIZED = "AUTHORIZED",         // Threshold satisfied
-  SUBMITTED = "SUBMITTED",           // Sent to Hedera
-  CONFIRMED = "CONFIRMED",           // Receipt success
-  REJECTED = "REJECTED",             // Policy or approval rejection
-  FAILED = "FAILED",                 // Runtime failure
-}
-
-/**
- * Allowed state transitions.
- * Any transition not listed here is INVALID.
- */
-const AllowedTransitions: Record<RequestState, RequestState[]> = {
-  [RequestState.CREATED]: [
-    RequestState.POLICY_APPROVED,
-    RequestState.REJECTED,
-  ],
-
-  [RequestState.POLICY_APPROVED]: [
-    RequestState.AWAITING_APPROVALS,
-    RequestState.REJECTED,
-  ],
-
-  [RequestState.AWAITING_APPROVALS]: [
-    RequestState.AUTHORIZED,
-    RequestState.REJECTED,
-  ],
-
-  [RequestState.AUTHORIZED]: [
-    RequestState.SUBMITTED,
-  ],
-
-  [RequestState.SUBMITTED]: [
-    RequestState.CONFIRMED,
-    RequestState.FAILED,
-  ],
-
-  [RequestState.CONFIRMED]: [],
-
-  [RequestState.REJECTED]: [],
-
-  [RequestState.FAILED]: [],
+const APP_METADATA: HashConnectTypes.AppMetadata = {
+  name: "MPC Custodial Wallet",
+  description: "2-of-3 MPC Wallet (Wealth / Client)",
+  icon: "https://yourdomain.com/icon.png",
 };
 
-/**
- * Request State Machine
- */
-export class RequestStateMachine {
-  private state: RequestState;
+class HashPackConnector {
+  private hashconnect: HashConnect;
+  private topic: string | null = null;
+  private pairingData: HashConnectTypes.SavedPairingData | null = null;
 
-  constructor(initialState: RequestState = RequestState.CREATED) {
-    this.state = initialState;
+  constructor() {
+    this.hashconnect = new HashConnect();
   }
 
   /**
-   * Get current state.
+   * Initialize HashPack
    */
-  getState(): RequestState {
-    return this.state;
+  async init(): Promise<void> {
+    await this.hashconnect.init(APP_METADATA, "testnet", false);
   }
 
   /**
-   * Attempt a state transition.
-   * Throws if transition is invalid.
+   * Connect to HashPack wallet
    */
-  transition(next: RequestState): void {
-    const allowed = AllowedTransitions[this.state];
+  async connect(): Promise<{
+    accountId: string;
+    publicKey: string;
+  }> {
+    const state = await this.hashconnect.connect();
 
-    if (!allowed.includes(next)) {
-      throw new Error(
-        `INVALID_STATE_TRANSITION: ${this.state} -> ${next}`
-      );
+    if (!state.topic) {
+      throw new Error("HASHCONNECT_INIT_FAILED");
     }
 
-    this.state = next;
+    this.topic = state.topic;
+
+    await new Promise<void>((resolve) => {
+      this.hashconnect.pairingEvent.once((data) => {
+        this.pairingData = data;
+        resolve();
+      });
+    });
+
+    await this.hashconnect.connectToLocalWallet();
+
+    if (!this.pairingData || this.pairingData.accountIds.length === 0) {
+      throw new Error("NO_ACCOUNT_PAIRED");
+    }
+
+    return {
+      accountId: this.pairingData.accountIds[0],
+      publicKey: this.pairingData.publicKey,
+    };
   }
 
   /**
-   * Convenience guards
+   * Sign frozen Hedera transaction bytes using HashPack
    */
-  isTerminal(): boolean {
-    return (
-      this.state === RequestState.CONFIRMED ||
-      this.state === RequestState.REJECTED ||
-      this.state === RequestState.FAILED
-    );
-  }
+  async signTransactionBytes(
+    txBytes: Uint8Array
+  ): Promise<{
+    signedBytes: Uint8Array;
+    signatureMap: Uint8Array;
+  }> {
+    if (!this.topic || !this.pairingData) {
+      throw new Error("HASHCONNECT_NOT_CONNECTED");
+    }
 
-  isAuthorized(): boolean {
-    return this.state === RequestState.AUTHORIZED;
+    const response = await this.hashconnect.sendTransaction(
+      this.topic,
+      {
+        byteArray: txBytes,
+        metadata: {
+          accountToSign: this.pairingData.accountIds[0],
+          returnTransaction: true,
+        },
+      }
+    );
+
+    if (!response.success || !response.signedTransaction) {
+      throw new Error("USER_REJECTED_SIGNATURE");
+    }
+
+    return {
+      signedBytes: response.signedTransaction,
+      signatureMap: response.signatureMap!,
+    };
   }
 }
+
+export const hashPack = new HashPackConnector();
