@@ -1,13 +1,30 @@
 {
   "compilerOptions": {
+    /* Language & runtime */
     "target": "ES2020",
-    "module": "CommonJS",
-    "moduleResolution": "node",
+    "lib": ["ES2020"],
+    "module": "Node16",
+
+    /* Module resolution (IMPORTANT for noble) */
+    "moduleResolution": "node16",
+    "allowJs": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+
+    /* Project structure */
     "rootDir": "src",
     "outDir": "dist",
+
+    /* Type safety */
     "strict": true,
-    "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true
-  }
+    "skipLibCheck": true,
+
+    /* Node / tooling */
+    "types": ["node"]
+  },
+  
+  
+  "include": ["src", "scripts"],
+  "exclude": ["node_modules", "dist"]
 }

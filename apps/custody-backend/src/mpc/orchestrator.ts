@@ -4,8 +4,8 @@ import {
   combinePartialsEd25519,
   PartialSig,
 } from "/Users/namojperiakumar/Desktop/MPC-Custodial-Wallet/apps/custody-backend/src/mpc/realEngine";
-import { sha512 } from "@noble/hashes/sha512";
-import { bytesToNumberLE } from "@noble/curves/abstract/utils";
+import { sha512 } from "@noble/hashes/sha512.js";
+import { bytesToNumberLE } from "@noble/curves/abstract/utils.js";
 
 const ED25519_L =
   2n ** 252n +

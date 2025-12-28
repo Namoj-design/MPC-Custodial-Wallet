@@ -1,9 +1,9 @@
 import { Point } from "@noble/ed25519";
-import { sha512 } from "@noble/hashes/sha512";
+import { sha512 } from "@noble/hashes/sha512.js";
 import {
   bytesToNumberLE,
   numberToBytesLE,
-} from "@noble/curves/abstract/utils";
+} from "@noble/curves/abstract/utils.js";
 
 /**
  * Ed25519 curve order:
