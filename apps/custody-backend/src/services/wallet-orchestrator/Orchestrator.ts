@@ -2,6 +2,8 @@ import { ApprovalRole, ThresholdResult } from "../../shared/threshold/thresholdP
 import { ApprovalTracker } from "./ApprovalTracker.ts";
 import { RequestStateMachine, RequestState } from "./RequestStateMachine.ts";
 
+export type ExecutionTrigger = (intentId: string) => Promise<void>;
+
 /**
  * Transaction intent managed by the orchestrator
  */
@@ -23,6 +25,8 @@ export class Orchestrator {
   private trackers = new Map<string, ApprovalTracker>();
   private machines = new Map<string, RequestStateMachine>();
 
+  private executionTrigger?: ExecutionTrigger;
+
   /**
    * Create a new transaction intent
    */
@@ -38,6 +42,13 @@ export class Orchestrator {
     this.machines.set(intentId, machine);
 
     return this.snapshot(intentId);
+  }
+
+  /**
+   * Register execution trigger (called when threshold is satisfied)
+   */
+  registerExecutionTrigger(trigger: ExecutionTrigger): void {
+    this.executionTrigger = trigger;
   }
 
   /**
@@ -64,6 +75,12 @@ export class Orchestrator {
 
     if (result.satisfied && machine.getState() === RequestState.AWAITING_APPROVALS) {
       machine.transition(RequestState.AUTHORIZED);
+
+      if (this.executionTrigger) {
+        this.executionTrigger(intentId).catch(() => {
+          this.reject(intentId);
+        });
+      }
     }
 
     return this.snapshot(intentId);
