@@ -54,3 +54,23 @@ export async function signAndSubmitTransferTx(
     status: receipt.status.toString(),
   };
 }
+
+import { verifySignedTransaction } from "./signatureVerifier";
+
+/**
+ * Verify a client (HashPack) signature before recording approval.
+ * This does NOT submit or mutate the transaction.
+ */
+export function verifyClientSignature(params: {
+  signedBytes: Uint8Array;
+  clientPublicKey: string;
+}): void {
+  const isValid = verifySignedTransaction({
+    signedBytes: params.signedBytes,
+    expectedPublicKey: params.clientPublicKey,
+  });
+
+  if (!isValid) {
+    throw new Error("INVALID_CLIENT_SIGNATURE");
+  }
+}
