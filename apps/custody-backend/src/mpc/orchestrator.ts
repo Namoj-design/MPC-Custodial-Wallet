@@ -42,9 +42,9 @@ export class MPCOrchestrator {
     try {
       const Rbytes = Array.from(this.nonces.values()).flat();
       const input = new Uint8Array([
-        ...Rbytes,
-        ...publicKey,
-        ...message,
+        ...Rbytes.flatMap((arr) => Array.from(arr)),
+        ...Array.from(publicKey),
+        ...Array.from(message),
       ]);
 
       const h = sha512(input);
