@@ -70,6 +70,13 @@ export class Orchestrator {
   }
 
   /**
+   * Approve intent from CLIENT (HashPack)
+   */
+  approveClient(intentId: string): TransactionIntent {
+    return this.addApproval(intentId, "CLIENT");
+  }
+
+  /**
    * Mark intent as submitted
    */
   markSubmitted(intentId: string): void {
