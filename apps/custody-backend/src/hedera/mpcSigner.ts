@@ -3,7 +3,7 @@ import {
     PublicKey,
     AccountId,
   } from "@hashgraph/sdk";
-  import { createHederaClient } from "./client";
+  import { createHederaClient } from "./client.ts";
   
   export async function signAndSubmitTransferTx(
     mpcPublicKeyBytes: Uint8Array,

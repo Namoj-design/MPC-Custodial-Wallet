@@ -3,7 +3,7 @@ import { MPCSessionState } from "./state";
 import {
   combinePartialsEd25519,
   PartialSig,
-} from "/Users/namojperiakumar/Desktop/MPC-Custodial-Wallet/apps/custody-backend/src/mpc/realEngine";
+} from "/Users/namojperiakumar/Desktop/MPC-Custodial-Wallet/apps/custody-backend/src/mpc/realEngine.ts";
 import { sha512 } from "@noble/hashes/sha512.js";
 import { bytesToNumberLE } from "@noble/curves/abstract/utils.js";
 

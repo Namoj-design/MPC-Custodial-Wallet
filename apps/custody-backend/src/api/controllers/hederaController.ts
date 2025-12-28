@@ -1,5 +1,5 @@
 import { FastifyRequest, FastifyReply } from "fastify";
-import { signAndSubmitTransferTx } from "../../hedera/mpcSigner";
+import { signAndSubmitTransferTx } from "../../hedera/mpcSigner.ts";
 
 export async function submitMpcSignedTx(
   request: FastifyRequest,

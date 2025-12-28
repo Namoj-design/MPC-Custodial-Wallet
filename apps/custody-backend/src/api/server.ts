@@ -1,8 +1,8 @@
 import Fastify, { FastifyInstance } from "fastify";
 import dotenv from "dotenv";
 
-import { hederaRoutes } from "./routes/hederaRoutes";
-import { accountRoutes } from "./routes/accountRoutes";
+import { hederaRoutes } from "./routes/hederaRoutes.ts";
+import { accountRoutes } from "./routes/accountRoutes.ts";
 
 dotenv.config();
 

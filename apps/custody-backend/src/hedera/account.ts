@@ -3,7 +3,7 @@ import {
     PublicKey,
     Hbar,
   } from "@hashgraph/sdk";
-  import { createHederaClient } from "./client";
+  import { createHederaClient } from "./client.js";
   
   /**
    * Creates a Hedera account controlled by an MPC public key
