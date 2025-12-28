@@ -92,3 +92,116 @@ class HashPackConnector {
 }
 
 export const hashPack = new HashPackConnector();
+
+/**
+ * Lifecycle states for a custody transaction request
+ */
+export enum RequestState {
+  CREATED = "CREATED",
+  POLICY_APPROVED = "POLICY_APPROVED",
+  AWAITING_APPROVALS = "AWAITING_APPROVALS",
+  AUTHORIZED = "AUTHORIZED",
+  SUBMITTED = "SUBMITTED",
+  CONFIRMED = "CONFIRMED",
+  REJECTED = "REJECTED",
+  FAILED = "FAILED",
+}
+
+/**
+ * Custody-grade request state machine.
+ * Enforces valid lifecycle transitions and terminal states.
+ */
+export class RequestStateMachine {
+  private state: RequestState;
+
+  constructor(initialState: RequestState = RequestState.CREATED) {
+    this.state = initialState;
+  }
+
+  getState(): RequestState {
+    return this.state;
+  }
+
+  /**
+   * Transition request to a new state (internal guard)
+   */
+  transition(next: RequestState): void {
+    if (this.isTerminal()) {
+      throw new Error("REQUEST_IN_TERMINAL_STATE");
+    }
+
+    const allowed = this.allowedTransitions(this.state);
+
+    if (!allowed.includes(next)) {
+      throw new Error(
+        `INVALID_STATE_TRANSITION: ${this.state} → ${next}`
+      );
+    }
+
+    this.state = next;
+  }
+
+  /**
+   * Called when transaction is submitted to Hedera
+   */
+  onSubmit(): void {
+    this.transition(RequestState.SUBMITTED);
+  }
+
+  /**
+   * Called when Hedera receipt confirms consensus
+   */
+  onConfirm(): void {
+    this.transition(RequestState.CONFIRMED);
+  }
+
+  /**
+   * Reject the request (policy / execution failure)
+   */
+  reject(): void {
+    this.state = RequestState.REJECTED;
+  }
+
+  /**
+   * Mark request as failed (execution error)
+   */
+  fail(): void {
+    this.state = RequestState.FAILED;
+  }
+
+  /**
+   * Terminal states cannot transition further
+   */
+  isTerminal(): boolean {
+    return (
+      this.state === RequestState.CONFIRMED ||
+      this.state === RequestState.REJECTED ||
+      this.state === RequestState.FAILED
+    );
+  }
+
+  /**
+   * Allowed transitions by state
+   */
+  private allowedTransitions(state: RequestState): RequestState[] {
+    switch (state) {
+      case RequestState.CREATED:
+        return [RequestState.POLICY_APPROVED];
+
+      case RequestState.POLICY_APPROVED:
+        return [RequestState.AWAITING_APPROVALS];
+
+      case RequestState.AWAITING_APPROVALS:
+        return [RequestState.AUTHORIZED, RequestState.REJECTED];
+
+      case RequestState.AUTHORIZED:
+        return [RequestState.SUBMITTED, RequestState.REJECTED];
+
+      case RequestState.SUBMITTED:
+        return [RequestState.CONFIRMED, RequestState.FAILED];
+
+      default:
+        return [];
+    }
+  }
+}
