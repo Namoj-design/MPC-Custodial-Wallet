@@ -1,4 +1,5 @@
-import Fastify, { FastifyInstance } from "fastify";
+import Fastify from "fastify"; 
+import type { FastifyInstance } from "fastify";
 import dotenv from "dotenv";
 
 import { hederaRoutes } from "./routes/hederaRoutes.ts";

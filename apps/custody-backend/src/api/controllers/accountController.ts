@@ -1,4 +1,4 @@
-import { FastifyRequest, FastifyReply } from "fastify";
+import type { FastifyRequest, FastifyReply } from "fastify";
 import { createMpcAccount } from "../../hedera/account.ts";
 
 export async function createMpcHederaAccount(
