@@ -1,47 +1,30 @@
-
-
 import { ApprovalRole, ThresholdResult } from "../../shared/threshold/thresholdPolicy.ts";
 import { ApprovalTracker } from "./ApprovalTracker.ts";
+import { RequestStateMachine, RequestState } from "./RequestStateMachine.ts";
 
 /**
- * High-level state of a transaction intent.
- */
-export enum OrchestratorState {
-  PENDING = "PENDING",
-  AUTHORIZED = "AUTHORIZED",
-  SUBMITTED = "SUBMITTED",
-}
-
-/**
- * Represents a single transaction intent
- * managed by the orchestrator.
+ * Transaction intent managed by the orchestrator
  */
 export type TransactionIntent = {
   intentId: string;
-  state: OrchestratorState;
+  state: RequestState;
   approvals: ThresholdResult;
 };
 
 /**
- * Wallet Orchestrator
+ * Wallet Orchestrator (Phase 3B)
  *
- * Responsibilities:
- * - Create transaction intents
- * - Track approvals via ApprovalTracker
- * - Enforce threshold authorization
- * - Expose submission readiness
- *
- * This class does NOT:
- * - Verify signatures
- * - Perform MPC math
- * - Submit Hedera transactions
+ * Owns:
+ * - Request lifecycle
+ * - Approval tracking
+ * - Threshold enforcement
  */
 export class Orchestrator {
-  private trackers: Map<string, ApprovalTracker> = new Map();
-  private states: Map<string, OrchestratorState> = new Map();
+  private trackers = new Map<string, ApprovalTracker>();
+  private machines = new Map<string, RequestStateMachine>();
 
   /**
-   * Create a new transaction intent.
+   * Create a new transaction intent
    */
   createIntent(intentId: string): TransactionIntent {
     if (this.trackers.has(intentId)) {
@@ -49,84 +32,95 @@ export class Orchestrator {
     }
 
     const tracker = new ApprovalTracker(intentId);
-    this.trackers.set(intentId, tracker);
-    this.states.set(intentId, OrchestratorState.PENDING);
+    const machine = new RequestStateMachine(RequestState.CREATED);
 
-    return {
-      intentId,
-      state: OrchestratorState.PENDING,
-      approvals: tracker.evaluate(),
-    };
+    this.trackers.set(intentId, tracker);
+    this.machines.set(intentId, machine);
+
+    return this.snapshot(intentId);
   }
 
   /**
-   * Record an approval for an intent.
+   * Mark intent as policy-approved
    */
-  addApproval(
-    intentId: string,
-    role: ApprovalRole
-  ): TransactionIntent {
-    const tracker = this.trackers.get(intentId);
-    const state = this.states.get(intentId);
+  approvePolicy(intentId: string): void {
+    const machine = this.getMachine(intentId);
+    machine.transition(RequestState.POLICY_APPROVED);
+    machine.transition(RequestState.AWAITING_APPROVALS);
+  }
 
-    if (!tracker || !state) {
-      throw new Error("INTENT_NOT_FOUND");
-    }
+  /**
+   * Record an approval (CLIENT / CUSTODIAN / RECOVERY)
+   */
+  addApproval(intentId: string, role: ApprovalRole): TransactionIntent {
+    const tracker = this.getTracker(intentId);
+    const machine = this.getMachine(intentId);
 
-    if (state === OrchestratorState.SUBMITTED) {
-      throw new Error("INTENT_ALREADY_SUBMITTED");
+    if (machine.isTerminal()) {
+      throw new Error("INTENT_TERMINAL");
     }
 
     const result = tracker.addApproval(role);
 
-    if (result.satisfied) {
-      this.states.set(intentId, OrchestratorState.AUTHORIZED);
+    if (result.satisfied && machine.getState() === RequestState.AWAITING_APPROVALS) {
+      machine.transition(RequestState.AUTHORIZED);
     }
 
-    return {
-      intentId,
-      state: this.states.get(intentId)!,
-      approvals: result,
-    };
+    return this.snapshot(intentId);
   }
 
   /**
-   * Check whether an intent is authorized for submission.
-   */
-  isAuthorized(intentId: string): boolean {
-    return (
-      this.states.get(intentId) === OrchestratorState.AUTHORIZED
-    );
-  }
-
-  /**
-   * Mark an intent as submitted.
-   * Should be called ONLY after successful submission.
+   * Mark intent as submitted
    */
   markSubmitted(intentId: string): void {
-    const state = this.states.get(intentId);
-
-    if (state !== OrchestratorState.AUTHORIZED) {
-      throw new Error("INTENT_NOT_AUTHORIZED");
-    }
-
-    this.states.set(intentId, OrchestratorState.SUBMITTED);
+    const machine = this.getMachine(intentId);
+    machine.transition(RequestState.SUBMITTED);
   }
 
   /**
-   * Get current state of an intent.
+   * Mark intent as confirmed
+   */
+  markConfirmed(intentId: string): void {
+    const machine = this.getMachine(intentId);
+    machine.transition(RequestState.CONFIRMED);
+  }
+
+  /**
+   * Reject intent
+   */
+  reject(intentId: string): void {
+    const machine = this.getMachine(intentId);
+    machine.transition(RequestState.REJECTED);
+  }
+
+  /**
+   * Snapshot current intent state
    */
   getIntent(intentId: string): TransactionIntent {
-    const tracker = this.trackers.get(intentId);
-    const state = this.states.get(intentId);
+    return this.snapshot(intentId);
+  }
 
-    if (!tracker || !state) {
-      throw new Error("INTENT_NOT_FOUND");
-    }
+  // -------- Internal helpers --------
+
+  private getTracker(intentId: string): ApprovalTracker {
+    const tracker = this.trackers.get(intentId);
+    if (!tracker) throw new Error("INTENT_NOT_FOUND");
+    return tracker;
+  }
+
+  private getMachine(intentId: string): RequestStateMachine {
+    const machine = this.machines.get(intentId);
+    if (!machine) throw new Error("INTENT_NOT_FOUND");
+    return machine;
+  }
+
+  private snapshot(intentId: string): TransactionIntent {
+    const tracker = this.getTracker(intentId);
+    const machine = this.getMachine(intentId);
 
     return {
       intentId,
-      state,
+      state: machine.getState(),
       approvals: tracker.evaluate(),
     };
   }
