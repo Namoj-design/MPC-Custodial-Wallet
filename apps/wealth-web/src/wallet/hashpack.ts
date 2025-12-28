@@ -3,7 +3,7 @@
  */
 async signTransactionBytes(txBytes: Uint8Array): Promise<{
     signedBytes: Uint8Array;
-    signatureMap: Uint8Array;
+    signatureMap?: Uint8Array;
   }> {
     if (!this.pairingData || !this.topic) {
       throw new Error("HASHCONNECT_NOT_CONNECTED");
