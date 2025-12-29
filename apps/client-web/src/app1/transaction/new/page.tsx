@@ -3,9 +3,9 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createTransactionIntent } from "@/lib/api/transactions";
-import { Card } from "@/components/Card";
-import { Button } from "@/components/Button";
-import { Field } from "@/components/Field";
+import { Card } from "/Users/namojperiakumar/Desktop/MPC-Custodial-Wallet/apps/client-web/src/components/Card";
+import { Button } from "/Users/namojperiakumar/Desktop/MPC-Custodial-Wallet/apps/client-web/src/components/Button.tsx";
+import { Field } from "/Users/namojperiakumar/Desktop/MPC-Custodial-Wallet/apps/client-web/src/components/Field";
 
 export default function NewTransactionPage() {
   const router = useRouter();
