@@ -32,7 +32,7 @@ export default function NewTransactionPage() {
   }
 
   return (
-    <Card title="New Transaction">
+    <Card title="New Transaction" children={undefined}>
         <Field
           label="Recipient Account ID"
           placeholder="0.0.xxxxx"
