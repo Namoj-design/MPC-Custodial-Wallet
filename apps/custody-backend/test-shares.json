@@ -1,0 +1,13 @@
+{
+  "p1": {
+    "privateShare": "bf35a468fc1e0291857370f9ee0807ca612786a4e762a9250ca3ea1e55674a48",
+    "publicShare": "48366cc9727746ce4a0e46982f61dd04910ce71fbffd15a74fe8cf81f87f956d"
+  },
+  "p2": {
+    "privateShare": "9d32fa0ec565ab526ae32538ce9c48a2cc54d44a6033c623d324e79aceeb77df",
+    "publicShare": "526ca92f1afad527f3f0584885938a111df1ffec62814984c459f8717d4b1ce8"
+  },
+  "backend": {
+    "publicShare": "ef49ba7441c1d1ef48664fcd0082c7b0aefd036482e4329d60bb5a49578850cd"
+  }
+}
