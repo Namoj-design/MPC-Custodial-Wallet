@@ -1,0 +1,55 @@
+type User @table {
+  authId: String!
+  displayName: String!
+  email: String!
+  createdAt: Timestamp!
+  organizationId: String
+}
+
+type Wallet @table {
+  walletId: String!
+  name: String!
+  network: String!
+  signingPolicyThreshold: Int!
+  createdAt: Timestamp!
+  description: String
+  externalId: String
+  owner: User # The creator/owner of the wallet
+}
+
+type WalletSigner @table(key: ["wallet", "user"]) {
+  wallet: Wallet!
+  user: User!
+  createdAt: Timestamp!
+  role: String
+}
+
+type Transaction @table {
+  transactionId: String!
+  type: String!
+  status: String!
+  amount: Float!
+  assetType: String!
+  createdAt: Timestamp!
+  recipientAddress: String
+  memo: String
+  tokenAddress: String
+  wallet: Wallet!
+  initiator: User!
+}
+
+type TransactionSignature @table(key: ["transaction", "signer"]) {
+  signatureStatus: String!
+  signedAt: Timestamp!
+  transaction: Transaction!
+  signer: User!
+}
+
+type Asset @table {
+  assetId: String!
+  name: String!
+  symbol: String!
+  type: String!
+  network: String!
+  decimals: Int
+}
